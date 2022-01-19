@@ -10,7 +10,7 @@
     
     </h1>
 
-    <ol class="breadcrumb">
+    <ol class="breadcrumbb">
       
       <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
       
