@@ -27,8 +27,10 @@ class ControladorUsuarios{
 					echo '<script>
 
 						window.location = "inicio";
+                        alert ("Bienvenido!");
 
 					</script>';
+
 
 				}else{
 
