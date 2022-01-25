@@ -10,7 +10,7 @@
 
   <div class="login-box-body">
 
-    <p class="login-box-msg">Ingresa tus datos de acceso</p>
+    <p class="login-box-msg">Ingresar al sistema</p>
 
     <form method="post">
 
@@ -32,7 +32,7 @@
        
         <div class="col-xs-4">
 
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Acceder</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Ingresar</button>
         
         </div>
 
@@ -42,7 +42,7 @@
 
         $login = new ControladorUsuarios();
         $login -> ctrIngresoUsuario();
-
+        
       ?>
 
     </form>
