@@ -12,7 +12,7 @@
 
 		</span>
 
-		<!-- logo normal -->
+		<!-- logo Normal --> 
 
 		<span class="logo-lg">
 			
