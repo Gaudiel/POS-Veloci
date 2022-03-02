@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pos-avance.iml" filepath="$PROJECT_DIR$/.idea/pos-avance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/POS-Veloci.iml" filepath="$PROJECT_DIR$/.idea/POS-Veloci.iml" />
     </modules>
   </component>
 </project>
