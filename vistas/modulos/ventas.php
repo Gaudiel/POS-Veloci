@@ -1,274 +1,106 @@
-<?php
-
-if($_SESSION["perfil"] == "Especial"){
-
-  echo '<script>
-
-    window.location = "inicio";
-
-  </script>';
-
-  return;
-
-}
-
-$xml = ControladorVentas::ctrDescargarXML();
-
-if($xml){
-
-  rename($_GET["xml"].".xml", "xml/".$_GET["xml"].".xml");
-
-  echo '<a class="btn btn-block btn-success abrirXML" archivo="xml/'.$_GET["xml"].'.xml" href="ventas">Se ha creado correctamente el archivo XML <span class="fa fa-times pull-right"></span></a>';
-
-}
-
-?>
 <div class="content-wrapper">
 
-  <section class="content-header">
+    <section class="content-header">
 
-    <h1>
+        <h1>
 
-      Administrar ventas
+            Administrar ventas
 
-    </h1>
+        </h1>
 
-    <ol class="breadcrumb">
+        <ol class="breadcrumb">
 
-      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
 
-      <li class="active">Administrar ventas</li>
+            <li class="active">Administrar ventas</li>
 
-    </ol>
+        </ol>
 
-  </section>
+    </section>
 
-  <section class="content">
+    <section class="content">
 
-    <div class="box">
+        <div class="box">
 
-      <div class="box-header with-border">
+            <div class="box-header with-border">
 
-        <a href="crear-venta">
+                <a href="crear-venta">
 
-          <button class="btn btn-primary">
+                    <button class="btn btn-primary">
 
-            Agregar venta
+                        Agregar venta
 
-          </button>
+                    </button>
 
-        </a>
+                </a>
 
-         <button type="button" class="btn btn-default pull-right" id="daterange-btn">
+            </div>
 
-            <span>
-              <i class="fa fa-calendar"></i>
+            <div class="box-body">
 
-              <?php
+                <table class="table table-bordered table-striped dt-responsive tablas">
 
-                if(isset($_GET["fechaInicial"])){
+                    <thead>
 
-                  echo $_GET["fechaInicial"]." - ".$_GET["fechaFinal"];
+                    <tr>
 
-                }else{
+                        <th style="width:10px">#</th>
+                        <th>C贸digo factura</th>
+                        <th>Cliente</th>
+                        <th>Vendedor</th>
+                        <th>Forma de pago</th>
+                        <th>Neto</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
 
-                  echo 'Rango de fecha';
+                    </tr>
 
-                }
+                    </thead>
 
-              ?>
-            </span>
+                    <tbody>
 
-            <i class="fa fa-caret-down"></i>
+                    <tr>
 
-         </button>
+                        <td>1</td>
 
-      </div>
+                        <td>1000123</td>
 
-      <div class="box-body">
+                        <td>Juan Villegas</td>
 
-       <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
+                        <td>Julio G贸mez</td>
 
-        <thead>
+                        <td>TC-12412425346</td>
 
-         <tr>
+                        <td>$ 1,000.00</td>
 
-           <th style="width:10px">#</th>
-           <th>Código factura</th>
-           <th>Cliente</th>
-           <th>Vendedor</th>
-           <th>Tienda</th>
-           <th>Num.Serie</th>
-           <th>Forma de pago</th>
-           <th>Neto</th>
-           <th>Total</th>
-           <th>Fecha</th>
-           <th>Acciones</th>
+                        <td>$ 1,190.00</td>
 
-         </tr>
+                        <td>2017-12-11 12:05:32</td>
 
-        </thead>
+                        <td>
 
-        <tbody>
+                            <div class="btn-group">
 
-        <?php
+                                <button class="btn btn-info"><i class="fa fa-print"></i></button>
 
-          if(isset($_GET["fechaInicial"])){
+                                <button class="btn btn-danger"><i class="fa fa-times"></i></button>
 
-            $fechaInicial = $_GET["fechaInicial"];
-            $fechaFinal = $_GET["fechaFinal"];
+                            </div>
 
-          }else{
+                        </td>
 
-            $fechaInicial = null;
-            $fechaFinal = null;
+                    </tr>
 
-          }
+                    </tbody>
 
-          $respuesta = ControladorVentas::ctrRangoFechasVentas($fechaInicial, $fechaFinal);
+                </table>
 
-          foreach ($respuesta as $key => $value) {
+            </div>
 
-           echo '<tr>
+        </div>
 
-                  <td>'.($key+1).'</td>
-
-                  <td>'.$value["codigo"].'</td>';
-
-                  $itemCliente = "id";
-                  $valorCliente = $value["id_cliente"];
-
-                  $respuestaCliente = ControladorClientes::ctrMostrarClientes($itemCliente, $valorCliente);
-
-                  echo '<td>'.$respuestaCliente["nombre"].'</td>';
-
-                  $itemUsuario = "id";
-                  $valorUsuario = $value["id_vendedor"];
-
-                  $respuestaUsuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
-
-                  echo '<td>'.$respuestaUsuario["nombre"].'</td>
-
-                  <td>'.$value["tienda"].'</td>
-
-                  <td>'.$value["serie"].'</td>
-
-                  <td>'.$value["metodo_pago"].'</td>
-
-                  <td>$ '.number_format($value["neto"],2).'</td>
-
-                  <td>$ '.number_format($value["total"],2).'</td>
-
-                  <td>'.$value["fecha"].'</td>
-
-                  <td>
-
-                    <div class="btn-group">
-
-                      <a class="btn btn-success" href="index.php?ruta=ventas&xml='.$value["codigo"].'">xml</a>
-
-                      <button class="btn btn-info btnImprimirFactura" codigoVenta="'.$value["codigo"].'">
-
-                        <i class="fa fa-print"></i>
-
-                      </button>';
-
-                      if($_SESSION["perfil"] == "Administrador"){
-
-                      echo '<button class="btn btn-warning btnEditarVenta" idVenta="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
-
-                      <button class="btn btn-danger btnEliminarVenta" idVenta="'.$value["id"].'"><i class="fa fa-times"></i></button>';
-
-                    }
-
-                    echo '</div>
-
-                  </td>
-
-                </tr>';
-            }
-
-        ?>
-
-        </tbody>
-        <script>
-
-           console.log(window.location.pathname);
-
-  if(window.location.pathname === '/ventas'){
-
-    setTimeout(function(){
-    jQuery(document).ready(function(){
-
-   let valora = document.querySelector('#tiendita').textContent;
-
-      let valorb = "Agregar"
-
-       let resume_table = document.querySelector('#DataTables_Table_0 tbody');
-       // console.log(resume_table);
-      if(valora === 'Administrador' ){
-         console.log('Hola Administrador')
-
-      }
-      else{
-
-         for (var i = 0, row; row = resume_table.rows[i]; i++)
-         {
-
-             for (var j = 0, col; col = row.cells[j]; j++)
-             {
-                 //alert(col[j].innerText);
-                 //console.log(`Txt: ${col.innerText} Fila: ${i}  Celda: ${j}`);
-               if(col.innerText === valora )
-                 {
-                     console.log(col.innerText)
-                     //row.style.display = 'none'
-                     row.classList.add('mostrar');
-                 }
-
-             }
-                 if(!(row.classList.contains('mostrar')))
-                   {
-                       console.log('no contiene')
-                       row.style.display = 'none'
-                   }
-         }
-
- }
-
-     })},200);
-
-
-
- }
-
-
-
-
-        </script>
-
-       </table>
-
-       <?php
-
-      $eliminarVenta = new ControladorVentas();
-      $eliminarVenta -> ctrEliminarVenta();
-
-      ?>
-
-
-      </div>
-
-    </div>
-
-  </section>
+    </section>
 
 </div>
-<style>
-#DataTables_Table_0_info {
- display: none !important;
-}
-</style>
-
-
 
